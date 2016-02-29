@@ -372,7 +372,7 @@ else:
 
 bg_ser = None
 
-if hwVersion is not None:
+if ser is not None:
     ser.flush()
 
     # set up background serial processing, which will continuously read data from serial and put whole lines in a queue
@@ -630,9 +630,12 @@ while run:
                     logMessage("Notification: Profile mode enabled")
                     raise socket.timeout  # go to serial communication to update controller
         elif messageType == "programController" or messageType == "programArduino":
-            bg_ser.stop()
-            ser.close()  # close serial port before programming
-            ser = None
+            if bg_ser is not None:
+                bg_ser.stop()
+            if ser is not None:
+                if ser.isOpen():
+                    ser.close()  # close serial port before programming
+                ser = None
             try:
                 programParameters = json.loads(value)
                 hexFile = programParameters['fileName']
