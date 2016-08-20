@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# Polską wersję językową dodał kinsl4yer 20/08/2016
+
 # Copyright 2013 BrewPi
 # This file is part of BrewPi.
 
@@ -26,7 +29,7 @@ warn() {
   local fmt="$1"
   command shift 2>/dev/null
   echo -e "$fmt\n" "${@}"
-  echo -e "\n*** ERROR ERROR ERROR ERROR ERROR ***\n----------------------------------\nSee above lines for error message\nScript NOT completed\n"
+  echo -e "\n*** BŁĄD BŁĄD BŁĄD BŁĄD BŁĄD***\n----------------------------------\nSprawdź powyższe wiersze w celu znalezienia komunikatu błędu\nInstalacja NIE ZOSTAŁA ukończona\n"
 }
 
 die () {
@@ -38,18 +41,18 @@ die () {
 ############
 ### Install required packages
 ############
-echo -e "\n***** Installing/updating required packages... *****\n"
+echo -e "\n***** Instalacja/aktualizacja niezbędnych pakietów... *****\n"
 lastUpdate=$(stat -c %Y /var/lib/apt/lists)
 nowTime=$(date +%s)
 if [ $(($nowTime - $lastUpdate)) -gt 604800 ] ; then
-    echo "last apt-get update was over a week ago. Running apt-get update before updating dependencies"
+    echo "Ostatnie wykonanie aktualizacji 'apt-get update' miało miejsce ponad tydzień temu. Uruchamianie 'apt-get update' przed aktualizacją zależności"
     sudo apt-get update||die
 fi
 
 sudo apt-get install -y apache2 libapache2-mod-php5 php5-cli php5-common php5-cgi php5 git-core build-essential python-dev python-pip git-core || die
 
-echo -e "\n***** Installing/updating required python packages via pip... *****\n"
+echo -e "\n***** Instalacja/aktualizacja niezbędnych pakietów python poprzez pip (package manager)... *****\n"
 
 sudo pip install pyserial psutil simplejson configobj gitpython --upgrade
 
-echo -e "\n***** Done processing BrewPi dependencies *****\n"
+echo -e "\n***** Ukończono przetwarzanie zależności BrewPi *****\n"
